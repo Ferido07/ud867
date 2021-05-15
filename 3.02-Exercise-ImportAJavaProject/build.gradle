@@ -18,5 +18,7 @@ or uncomment the following line to essentially paste the contents of the
 solution file into this one.
 
 */
+apply plugin: 'java'
+apply plugin: 'application'
 
 //apply from: "solution.gradle"

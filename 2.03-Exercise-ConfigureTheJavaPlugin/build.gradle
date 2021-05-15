@@ -26,3 +26,32 @@ User Guide chapter regarding the Java plugin.
 https://docs.gradle.org/current/userguide/java_plugin.html#sec:source_sets
 
 */
+
+apply plugin: 'java'
+
+jar {
+	manifest {
+		//Wrong way to pass in a map to attributes method
+		attributes ['Implementation-Version', '1.0']
+		//Correct way as used in solution is
+		// attributes 'Implementation-Version': '1.0'
+		//In addtion i could have declared a map and pass it in 
+		// def map
+		// map['Implementation-Version'] = '1.0'
+	}
+}
+
+sourceSets {
+	main {
+		java {
+		    /* 
+			using only 'java' in list for srcDirs fails to compile because Person is in the
+			dir 'src/main/java'. But the solution file uses a different command i.e. srcDir
+			instead of srcDirs. srcDir only adds a dir to the list instead of replacing the
+			list hence it works.			
+			*/
+			srcDirs = ['src/main/java', 'java']
+
+		}
+	}
+}
