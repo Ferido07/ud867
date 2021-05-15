@@ -39,30 +39,42 @@ task brew {
 }
 
 task pour {
+    dependsOn brew
     doLast {
         println "Pouring. Glug, glug, glug."
     }
 }
 
 task addSweetener {
+    dependsOn pour
+    //finalizedBy "drink" finalized by is inappropriate because there is no  required dependency specified in the
+    // description that adding sweetener should be followed by drinking. But the catch is that since there is no
+    // required dependency i.e. since adding sweetener is optional if we are going to do both drink and add sweetener
+    // then drinking must come after adding sweetener. And hence we must use mustRunAfter in drink task
+    // usage of finalizedBy as is commented out results in same output as using mustRunAfter in drink but conceptually
+    // finalizedBy adds strict dependency between adding sweetener and drinking which is not specified or desired
     doLast {
         println "Adding sweetener. Stir, stir, stir."
     }
 }
 
 task drink {
+    dependsOn pour
+    mustRunAfter addSweetener
     doLast {
         println "Drinking. Gulp, gulp, gulp."
     }
 }
 
 task blackCoffee {
+    dependsOn drink
     doLast {
         println "Mmmm, bitter! just how I like it."
     }
 }
 
 task sweetCoffee {
+    dependsOn = [drink, addSweetener]
     doLast {
         println "Mmmm, sweet! just how I like it."
     }
